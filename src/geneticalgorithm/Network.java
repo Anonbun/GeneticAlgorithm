@@ -10,7 +10,7 @@ import static java.lang.System.out;
 
 /**
  *
- * @author max
+ * @author Anonbun
  */
 public class Network
 {

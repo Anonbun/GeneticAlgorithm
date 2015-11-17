@@ -9,7 +9,7 @@ import java.util.Random;
 
 /**
  *
- * @author max
+ * @author Anonbun
  */
 public class NetworkBuilder
 {

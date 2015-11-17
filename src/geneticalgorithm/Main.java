@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author max
+ * @author Anonbun
  */
 public class Main
 {

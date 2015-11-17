@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.Kryo;
 
 /**
  *
- * @author max
+ * @author Anonbun
  */
 public class ObjectCopy
 {

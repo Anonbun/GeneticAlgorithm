@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author max
+ * @author Anonbun
  */
 public class CrossoverEngine
 {
