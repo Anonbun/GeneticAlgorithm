@@ -50,7 +50,7 @@ public class Main
         net2.run();
         System.out.println("Net2 after 2 runs: " + Arrays.toString(net2.read(new float[2])));
 
-        //*
+        //* test
         CrossoverEngine cr = new CrossoverEngine(true);
         Network net3 = cr.crossover(
                 new Network((Node[][]) ObjectCopy.copy(nodes1)),

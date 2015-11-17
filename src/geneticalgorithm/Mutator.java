@@ -34,6 +34,6 @@ public class Mutator
 
     Node[][] mutate(Node[][] nodeLayer)
     {
-        
+        return nodeLayer;
     }
 }
