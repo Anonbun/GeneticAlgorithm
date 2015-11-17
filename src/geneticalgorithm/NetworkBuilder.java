@@ -24,14 +24,12 @@ import java.util.Random;
  */
 public class NetworkBuilder
 {
+
     Random rng;
-    
-    
-    
+
     public NetworkBuilder(Random rng)
     {
         this.rng = rng;
-        
-        
+
     }
 }

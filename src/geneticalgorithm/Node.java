@@ -30,7 +30,7 @@ public class Node
     Connection[] conArray;
     boolean waiting = false; // to be used when threading
     boolean exists = true;
-    
+
     Node()
     {
         this(0, new Connection[0]);
@@ -41,17 +41,17 @@ public class Node
         this.value = value;
         this.conArray = conArray;
     }
-    
+
     Node NodeMorph(Node copy, Node[][] thisOrg, Node[][] copyOrg) throws Exception
     {
         this.value = copy.value;
         this.conArray = new Connection[copy.conArray.length];
         int jIndex, kIndex;
-        
+
         for (int i = 0; i < this.conArray.length; i++)
         {
             Connection conCopy = copy.conArray[i];
-            
+
             jIndex = kIndex = -1;
             for (int j = 0; j < copyOrg.length; j++)
             {
@@ -61,37 +61,37 @@ public class Node
                     {
                         jIndex = j;
                         kIndex = k;
-                        
+
                         break;
                     }
                 }
             }
-            
+
             if (jIndex == -1 || kIndex == -1)
             {
                 throw new Exception("Node copy, was not found in copyOrg");
             }
-            
+
             this.conArray[i] = new Connection(thisOrg[jIndex][kIndex], conCopy.threshold, conCopy.weight);
         }
-        
+
         return this;
     }
-    
+
     Node setValue(float value)
     {
         this.value = value;
-        
+
         return this;
     }
-    
+
     Node setCon(Connection[] conArray)
     {
         this.conArray = conArray;
-        
+
         return this;
     }
-    
+
     void send()
     {
         for (int i = 0; i < conArray.length; i++)
@@ -99,10 +99,10 @@ public class Node
             Connection tempCon = conArray[i];
 
             if (tempCon.node == null)
-            {                
+            {
                 conArray[i] = null;
             } else if (tempCon.threshold <= abs(value))
-            {                
+            {
                 tempCon.node.add(value * tempCon.weight);
             }
         }

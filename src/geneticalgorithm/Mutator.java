@@ -24,20 +24,21 @@ import java.util.Random;
  */
 public class Mutator
 {
+
     private Random rnd;
     double min;
     double max;
-    
+
     Mutator()
     {
         this(new Random());
     }
-    
+
     Mutator(Random rnd)
     {
         this.rnd = rnd;
     }
-    
+
     public Network mutate(Network net)
     {
         return new Network(mutate(net.copyNodeLayers()));

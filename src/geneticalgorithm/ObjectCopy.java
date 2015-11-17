@@ -24,8 +24,9 @@ import com.esotericsoftware.kryo.Kryo;
  */
 public class ObjectCopy
 {
+
     private static final Kryo kryo = new Kryo();
-    
+
     public static Object copy(Object obj)
     {
         return kryo.copy(obj);

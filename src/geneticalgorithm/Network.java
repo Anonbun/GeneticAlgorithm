@@ -43,17 +43,17 @@ public class Network
         for (Node[] nodeLayer : nodeLayers)
         {
             for (Node nodes : nodeLayer)
-            {                
+            {
                 nodes.send();
             }
         }
     }
-    
+
     Node[][] copyNodeLayers()
     {
         return (Node[][]) ObjectCopy.copy(nodeLayers);
     }
-    
+
     void write(float[] in) throws IllegalArgumentException
     {
         if (in.length != nodeLayers[0].length)
