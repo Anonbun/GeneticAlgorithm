@@ -16,6 +16,9 @@
  */
 package geneticalgorithm;
 
+import com.carrotsearch.hppc.IntHashSet;
+import com.carrotsearch.hppc.LongHashSet;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -25,8 +28,8 @@ import java.util.Random;
 public class Mutator
 {
 
-    private Random rnd;
-    float rate;
+    private Random rng;
+    float rate = 1f;
 
     Mutator()
     {
@@ -35,7 +38,7 @@ public class Mutator
 
     Mutator(Random rnd)
     {
-        this.rnd = rnd;
+        this.rng = rnd;
     }
 
     public Network mutate(Network net)
@@ -47,41 +50,77 @@ public class Mutator
     {
         int nodesToMutate;
         long nodeCount = 0;
-
+        long[] nodesM;
+        
         for (Node[] nodes : nodeLayer)
         {
             nodeCount += nodes.length;
         }
 
         nodesToMutate = (int) (nodeCount * rate);
-        if ((nodeCount * rate) - nodesToMutate > rnd.nextFloat())
+        if ((nodeCount * rate) - nodesToMutate > rng.nextFloat())
         {
             nodesToMutate++;
         }
-
+        
+        nodesM = gen(nodesToMutate, nodeCount);
+        
+        System.out.println(Arrays.toString(nodesM));
+        
+        for (int i = 0; i < nodesM.length; i++)
+        {
+            long temp = 0;
+            int outerIndex = -1;
+            int innerIndex = -1;
+            
+            for (int j = 0; j < nodeLayer.length; j++)
+            {
+                temp += nodeLayer[j].length;
+                
+                if (nodesM[i] < temp)
+                {
+                    outerIndex = j;
+                    innerIndex = (int) (nodesM[i] - (temp - nodeLayer[j].length));
+                    break;
+                }
+            }
+            
+            System.out.println(outerIndex + " " + innerIndex);
+            
+            mutate(nodeLayer[outerIndex][innerIndex], nodeLayer);
+        }
+        
         /*
-         * Select nodesToMutate amount of nodes from nodeLayer, so that the
-         * selection is uniform across the 2d array. Each node can only be
-         * selected to be mutate once.
+         * Add node addition and subtraction mutaion
          */
+        
         return nodeLayer;
     }
 
     private Node mutate(Node node, Node[][] nodeLayer)
     {
         int conToMutate;
-
+        long[] consM;
+        
         node.value = mutate(node.value);
 
         conToMutate = (int) (node.conArray.length * rate);
-        if ((node.conArray.length * rate) - conToMutate > rnd.nextFloat())
+        if ((node.conArray.length * rate) - conToMutate > rng.nextFloat())
         {
             conToMutate++;
         }
-
+        
+        consM = gen(conToMutate, node.conArray.length);
+        
+        for (long mutIndex : consM)
+        {            
+            mutate(node.conArray[(int) mutIndex], nodeLayer);
+        }
+        
         /*
-         * Same as selecting nodes but with this nodes connections.
+         * Same as add/sub nodes but with this nodes connections.
          */
+        
         return node;
     }
 
@@ -89,16 +128,41 @@ public class Mutator
     {
         con.threshold = mutate(con.threshold);
         con.weight = mutate(con.weight);
-
-        /*
-         * Select a random node from nodeLayer to change the target node into.
-         */
+        
+        
+        
         return con;
     }
 
     private float mutate(float value)
     {
-        return (value != 0) ? value * (rate * (rnd.nextFloat() * 2 - 1) + 1)
-                : rate * (rnd.nextFloat() * 2 - 1) + 1;
+        return (value != 0) ? value * (rate * (rng.nextFloat() * 2 - 1) + 1)
+                : rate * (rng.nextFloat() * 2 - 1) + 1;
+    }
+    
+    public long[] gen(long length, long max)
+    {
+        LongHashSet candidates = new LongHashSet();
+        for (long i = max - length; i < max; i++)
+        {
+            if (!candidates.add(nextLong(i + 1))) {
+                candidates.add(i);
+            }
+        }
+
+        return candidates.toArray();
+    }
+    
+    long nextLong(long n)
+    {
+        long bits, val;
+        
+        do
+        {
+           bits = (rng.nextLong() << 1) >>> 1;
+           val = bits % n;
+        } while (bits-val+(n-1) < 0L);
+        
+        return val;
     }
 }
